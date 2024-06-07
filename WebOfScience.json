@@ -1,0 +1,163 @@
+[
+  {
+    "op": "core/column-rename",
+    "oldColumnName": "File",
+    "newColumnName": "Database",
+    "description": "Rename column File to Database"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Database",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [
+          "Arts & Humanities Citation Index (AHCI).csv"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "WoS-AHCI"
+      }
+    ],
+    "description": "Mass edit cells in column Database"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Database",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [
+          "Emerging Sources Citation Index (ESCI).csv"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "WoS-ESCI"
+      }
+    ],
+    "description": "Mass edit cells in column Database"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Database",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [
+          "Science Citation Index Expanded (SCIE).csv"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "WoS-SCIE"
+      }
+    ],
+    "description": "Mass edit cells in column Database"
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Database",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [
+          "Social Sciences Citation Index (SSCI).csv"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "WoS-SSCI"
+      }
+    ],
+    "description": "Mass edit cells in column Database"
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "Journal title",
+    "expression": "grel:join ([cells['Journal title'].value,cells['Publisher name'].value],' ; ')",
+    "onError": "set-to-blank",
+    "newColumnName": "journal_info",
+    "columnInsertIndex": 2,
+    "description": "Create column journal_info at index 2 based on column Journal title using expression grel:join ([cells['Journal title'].value,cells['Publisher name'].value],' ; ')"
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "ISSN",
+    "expression": "grel:join ([cells['ISSN'].value,cells['eISSN'].value],';')",
+    "onError": "set-to-blank",
+    "newColumnName": "ISSNs",
+    "columnInsertIndex": 4,
+    "description": "Create column ISSNs at index 4 based on column ISSN using expression grel:join ([cells['ISSN'].value,cells['eISSN'].value],';')"
+  },
+  {
+    "op": "core/column-reorder",
+    "columnNames": [
+      "journal_info",
+      "ISSNs",
+      "Database"
+    ],
+    "description": "Reorder columns"
+  },
+  {
+    "op": "core/multivalued-cell-split",
+    "columnName": "ISSNs",
+    "keyColumnName": "journal_info",
+    "mode": "separator",
+    "separator": ";",
+    "regex": false,
+    "description": "Split multi-valued cells in column ISSNs"
+  },
+  {
+    "op": "core/fill-down",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "journal_info",
+    "description": "Fill down cells in column journal_info"
+  },
+  {
+    "op": "core/fill-down",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "Database",
+    "description": "Fill down cells in column Database"
+  },
+    {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "Database",
+    "expression": "grel:value+\" (2024-05-31)\"",
+    "onError": "set-to-blank",
+    "newColumnName": "Database(Last_Update)",
+    "columnInsertIndex": 3,
+    "description": "Create column Database(Last_Update) at index 3 based on column Database using expression grel:value+\" (2024-05-31)\""
+  }
+]

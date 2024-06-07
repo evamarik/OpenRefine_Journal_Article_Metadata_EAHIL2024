@@ -296,7 +296,7 @@ In this example, we will use data from the [publication server of the University
    - `Year of Publication`: 2024
    - `Institute`: Medizinische Fakultät
 
-On 2024-06-03, this gave 236 results. The full metadata can be downloaded in XML format in the IP range of the university. For the workshop, file can be downloaded here: [2024-06-04_OPUS_Export_Articles_Med.xml] (https://github.com/evamarik/OpenRefine_Journal_Article_Metadata_EAHIL2024/blob/main/2024-06-04_OPUS_Export_Articles_Med.xml)
+On 2024-06-03, this gave 236 results. The full metadata can be downloaded in XML format in the IP range of the university. For the workshop, file can be downloaded here: [2024-06-04_OPUS_Export_Articles_Med.xml](https://github.com/evamarik/OpenRefine_Journal_Article_Metadata_EAHIL2024/blob/main/2024-06-04_OPUS_Export_Articles_Med.xml)
 
 #### Loading data in Open Refine**: 
 1. **Create a New Project**: Click on "Create Project" and select "Choose Files" to upload the xml file. 

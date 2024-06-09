@@ -98,7 +98,7 @@ The search can be updated daily.
 2. **Configure Project**: Click "Configure parsing options" and make any changes if necessary (all settings should be fine). Enter a meaningful project name, e.g. "WebOfScience_2024-05". Click "Create Project" to load the data.
 
 #### Applying the Script
-1. **Use the Script**: Apply the provided Open Refine script (`WebOfScience.json`) to the loaded data. This script automates several cleaning and transformation steps.
+1. **Use the Script**: Apply the provided Open Refine script ([WebOfScience.json](https://github.com/evamarik/OpenRefine_Journal_Article_Metadata_EAHIL2024/blob/main/WebOfScience.json)) to the loaded data. This script automates several cleaning and transformation steps.
    - In Open Refine, go to "Undo/Redo" > "Apply..." and upload the `WebOfScience.json` file.
    - Please find a description of how to recreate the script manually below.
 
@@ -159,7 +159,7 @@ The search can be updated daily.
 2. **Configure Project**: Make any changes if necessary (all settings should be fine). Enter a meaningful project name, e.g. "Scopus_2024-05". Click "Create Project" to load the data.
 
 #### Applying the Script
-1. **Use the Script**: Apply the provided Open Refine script (`Scopus.json`) to the loaded data. 
+1. **Use the Script**: Apply the provided Open Refine script ([Scopus.json](https://github.com/evamarik/OpenRefine_Journal_Article_Metadata_EAHIL2024/blob/main/Scopus.json)) to the loaded data. 
    - In Open Refine, go to "Undo/Redo" > "Apply..." and upload the `Scopus.json` file.
    - Please find a description of how to recreate the script manually below.
 
@@ -226,7 +226,7 @@ The search can be updated daily.
 2. **Configure Project**: Make any changes if necessary (all settings should be fine). Enter a meaningful project name, e.g. "MEDLINE_2024-05-31". Click "Create Project" to load the data.
 
 #### Applying the Script
-1. **Use the Script**: Apply the provided OpenRefine script (`MEDLINE.json`) to the loaded data. 
+1. **Use the Script**: Apply the provided OpenRefine script ([MEDLINE.json(https://github.com/evamarik/OpenRefine_Journal_Article_Metadata_EAHIL2024/blob/main/MEDLINE.json)) to the loaded data. 
    - In OpenRefine, go to "Undo/Redo" > "Apply..." and upload the `MEDLINE.json` file.
    - Please find a description of how to recreate the script manually below.
 
@@ -305,7 +305,7 @@ On 2024-06-03, this gave 236 results. The full metadata can be downloaded in XML
 2. **Configure Project**: Select "Parse as XML file". Open Refine asks you to "Click on the first XML element corresponding to the first record to load". Select the first article (starting with "<Opus_Document Id="110428" ..."). Enter a meaningful project name, e.g. "Articles_2024_Med_2024-06-04". Click "Create Project" to load the data.
 
 #### Applying the Script
-1. **Use the Script**: Apply the provided Open Refine script (`OPUS_Export_ISSN_Matching.json`) to the loaded data. 
+1. **Use the Script**: Apply the provided Open Refine script ([OPUS_Export_ISSN_Matching.json](https://github.com/evamarik/OpenRefine_Journal_Article_Metadata_EAHIL2024/blob/main/OPUS_Export_ISSN_Matching.json)) to the loaded data. 
    - In OpenRefine, go to `Undo/Redo` > `Apply...` and upload the `OPUS_Export_ISSN_Matching.json` file.
    - Please find a description of how to recreate the script manually below.
 
@@ -396,5 +396,7 @@ The following steps are only necessary if the dataset from the university biblio
    value.split("|").uniques().join("|")
    ```
 
-4. Export the data in the desired format. 
+4. Export the data in the desired format.
+
+After following the entire workflow, the exported file should look like this: [Articles_2024_Med_2024-06-04_Indexed.tsv](https://github.com/evamarik/OpenRefine_Journal_Article_Metadata_EAHIL2024/blob/main/Articles_2024_Med_2024-06-04_Indexed.tsv).
   

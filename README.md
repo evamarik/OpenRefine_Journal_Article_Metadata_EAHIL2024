@@ -3,10 +3,10 @@
 ## Table of Contents
 
 - [Aim](#aim)
-- [Considerations for the three databases](##considerations-for-the-three-databases)
-- [Overview of the workflow](##overview-of-the-workflow)
-- [Preparation of journal lists](##preparation-of-journal-lists)
-- [Matching publication data from the university bibliography](##matching-publication-data-from-the-university-bibliography)
+- [Considerations for the three databases](#considerations-for-the-three-databases)
+- [Overview of the workflow](#overview-of-the-workflow)
+- [Preparation of journal lists](#preparation-of-journal-lists)
+- [Matching publication data from the university bibliography](#matching-publication-data-from-the-university-bibliography)
 
 ## Aim
 

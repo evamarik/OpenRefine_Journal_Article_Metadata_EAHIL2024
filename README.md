@@ -1,17 +1,33 @@
 # Enhancing publication data in the university bibliography
 
+## Table of Contents
+
+- [Aim](##aim)
+- [Considerations for the three databases](##considerations-for-the-three-databases)
+- [Overview of the workflow](##overview-of-the-workflow)
+- [Preparation of journal lists](##preparation-of-journal-lists)
+- [Matching publication data from the university bibliography](##matching-publication-data-from-the-university-bibliography)
 
 ## Aim
 
-Concerning a university's bibliography, the question might arise which publications have undergone peer review. To our knowledge, there is no web service where one could automatically request this information, e.g., based on a DOI. It can be argued that the indexing in established databases may serve as a proxy for peer review. This workflow can therefore be used to check whether articles have been published in journals indexed in Scopus, the different Web of Science indices, or MEDLINE, respectively. The matching is performed based on ISSNs only. It therfore ignores the date when journals where first selected for a given index, and that journals might lose their indexing status again. We accept these limitations, as we will only match articles published within the last year.
+Concerning a university's bibliography, the question might arise which publications have undergone peer review. To our knowledge, there is no web service where one could automatically request this information, e.g., based on a DOI. It can be argued that the indexing in established databases may serve as a proxy for peer review. This workflow can therefore be used to check whether articles have been published in journals indexed in Scopus, the different Web of Science indices, or MEDLINE, respectively. The matching is performed based on ISSNs only, regardless of the year of indexing. It therfore ignores that journals might lose their indexing status again. We accept this limitation, as we only look at articles published within the last year.
 
+## Overview of the workflow
+
+- Bring the list of indexed journals of each database into Open Refine.
+- Modify the list so that all ISSNs for a journal are in one column in separate rows, i.e. only one ISSN per cell.
+- Match ISSNs from articles in the university bibliography with indexed journals based on ISSNs. 
+- Add the following information to the university bibliography download:
+    - In which database(s) is the jounral indexed?
+    - When was the database used for the check last updated?
 
 ## Considerations for the three databases
 
-* Do they assess peer review as part of their journal selection process?
-* How to download a list of indexed journals?
-* How often are the lists updated?
+- Do they assess peer review as part of their journal selection process?
+- How to download a list of indexed journals?
+- How often are the lists of indexed journals updated?
 
+All sources were last accessed on 2024-05-20.
 
 ### Web of Science
 
@@ -69,17 +85,7 @@ Side note: All journals ever indexed in MEDLINE can be found in the [List of Ser
 
 The search can be updated daily.
 
-## Steps in Open Refine
-
-* Bring list of indexed journals from each databse into Open Refine.
-* Modify file so that all ISSNs for a journal are below each other in one column.
-* Match ISSNs form articles in the university bibliography with this row. 
-* Add the following information to the university bibliography download:
-    * In which database is the jounral indexed?
-    * What was the date of the last check?
-
-
-## Prepare journal lists
+## Preparation of journal lists
 
 ### Web of Science
 
@@ -87,13 +93,13 @@ The search can be updated daily.
 1. **Log in to Clarivate**: You need a Clarivate login to download the journal title lists from the Web of Science (WoS) indices. Visit the [Clarivate Collection List Downloads](https://mjl.clarivate.com/collection-list-downloads) page. Note down the date of the last upadate (in this example: 2024-05-20).
 2. **Download Title Lists**: Download the title lists for the different WoS indices such as ESCI, SCIE, SSCI, and AHCI. 
 
-#### Loading Data into OpenRefine
+#### Loading Data into Open Refine
 1. **Create a New Project**: Click on "Create Project" and select "Choose Files" to upload the title list file(s) you downloaded. If using multiple indices, upload the files simultaneously.
 2. **Configure Project**: Click "Configure parsing options" and make any changes if necessary (all settings should be fine). Enter a meaningful project name, e.g. "WebOfScience_2024-05". Click "Create Project" to load the data.
 
 #### Applying the Script
-1. **Use the Script**: Apply the provided OpenRefine script (`WebOfScience.json`) to the loaded data. This script automates several cleaning and transformation steps.
-   - In OpenRefine, go to `Undo/Redo` > `Apply...` and upload the `WebOfScience.json` file.
+1. **Use the Script**: Apply the provided Open Refine script (`WebOfScience.json`) to the loaded data. This script automates several cleaning and transformation steps.
+   - In Open Refine, go to "Undo/Redo" > "Apply..." and upload the `WebOfScience.json` file.
    - Please find a description of how to recreate the script manually below.
 
 #### Transformations and Cleaning Steps
@@ -122,12 +128,10 @@ The search can be updated daily.
      join([cells['ISSN'].value, cells['eISSN'].value], ';')
      ```
      and name the new column `ISSNs`.
-5. **Remove Unnecessary Columns**: Remove columns that are not needed for further analysis.
+5. **Remove and re-order Columns**: Remove all columns that are not needed for further analysis.
    - Click on the dropdown arrow next to the `All` column header. Select "Edit columns" > "Re-order / remove columns..."
-   - Drag and drop the column headers to remove them.
-6. **Reorder Columns**: Reorder the columns to ensure `journal_info`, `ISSNs`, and `Database` are the primary columns.
-   - In the same menu: Drag and drop the column headers to rearrange them.
-7. **Split Multi-valued Cells**: Split the `ISSNs` column, which contains multiple values, into individual rows using the separator ";".
+   - Drag and drop the column headers to remove them. Only keep columns `journal_info`, `ISSNs`, and `Database`, and rearrange them in this order.
+6. **Split Multi-valued Cells**: Split the `ISSNs` column, which contains multiple values, into individual rows using the separator ";".
    - Click on the dropdown arrow next to the `ISSNs` column header.
    - Select "Edit cells" > "Split multi-valued cells..." and enter ";" as the separator.
 8. **Fill Down Values**: Fill down values in the `Database` and `journal_info` columns.
@@ -147,17 +151,16 @@ The search can be updated daily.
 
 #### Downloading Title Lists
 * Starting point: Download the Source title list from [Scopus Title List](https://beta.elsevier.com/products/scopus/content?trial=true#4-titles-on-scopus).
-* Note down the date of the last update form the first worksheet of the file (in this example: "Scopus Sources Oct. 2023" > "2023-10").
-* To reduce the data size and complexity for OpenRefine, delete all worksheets except the first one (e.g., "Scopus Sources Oct. 2023"). In this worksheet, delete all columns from column U ("All Science Journal Classification Codes (ASJC)") onwards, and export the file as a CSV.
+* Note down the date of the last update from the first worksheet of the file (in this example: "Scopus Sources Oct. 2023" > "2023-10").
+* To reduce the data size and complexity for Open Refine, delete all worksheets except the first one (e.g., "Scopus Sources Oct. 2023"). In this worksheet, delete all columns from column U ("All Science Journal Classification Codes (ASJC)") onwards, and export the file as a csv file.
 
 #### Loading Data into OpenRefine
-1. **Open OpenRefine**: Launch OpenRefine on your computer. 
-2. **Create a New Project**: Click on "Create Project" and select "Choose Files" to upload the title list file. 
-3. **Configure Project**: Make any changes if necessary (all settings should be fine). Enter a meaningful project name, e.g. "Scopus_2024-05". Click "Create Project" to load the data.
+1. **Create a New Project**: Click on "Create Project" and select "Choose Files" to upload the title list file. 
+2. **Configure Project**: Make any changes if necessary (all settings should be fine). Enter a meaningful project name, e.g. "Scopus_2024-05". Click "Create Project" to load the data.
 
 #### Applying the Script
-1. **Use the Script**: Apply the provided OpenRefine script (`Scopus.json`) to the loaded data. This script automates several cleaning and transformation steps.
-   - In OpenRefine, go to `Undo/Redo` > `Apply...` and upload the `Scopus.json` file.
+1. **Use the Script**: Apply the provided Open Refine script (`Scopus.json`) to the loaded data. 
+   - In Open Refine, go to "Undo/Redo" > "Apply..." and upload the `Scopus.json` file.
    - Please find a description of how to recreate the script manually below.
 
 #### Transformations and Cleaning Steps
@@ -166,7 +169,7 @@ The search can be updated daily.
    - In the facet panel, choose "Inactive" and then click on "Edit rows" > "Remove all matching rows".
 2. **Remove Non-Journal Rows**: Remove rows where the `Source Type` is not "Journal" to exclude Trade Journals.
    - Create a facet by clicking on the dropdown arrow next to the `Source Type` column header and select "Facet" > "Text facet".
-   - Invert the selection to exclude journals, and then click on "Edit rows" > "Remove all matching rows".
+   - In the facet panel, choose "Journal". Invert the selection and then click on "Edit rows" > "Remove all matching rows".
 3. **Create `ISSNs` Column**: Combine the `Print-ISSN` and `E-ISSN` columns into a single column named `ISSNs`, with values separated by a semicolon.
    - Click on the dropdown arrow next to the `Print-ISSN` column header.
    - Select "Edit column" > "Add column based on this column..."
@@ -192,18 +195,16 @@ The search can be updated daily.
      join([cells['Source Title'].value, cells['Publisher's Name'].value], ' ; ')
      ```
      and name the new column `journal_info`.
-7. **Remove Unnecessary Columns**: Remove columns that are not needed for further analysis.
-   - Click on the dropdown arrow next to the `All` column header. Select "Edit columns" > "Re-order / remove columns..."
-   - Drag and drop the column headers to remove them.
-4. **Reorder Columns**: Reorder the columns to ensure `journal_info`, `ISSNs`, and `Database` are the primary columns.
-   - In the same menu: Drag and drop the column headers to rearrange them.
-9. **Add `Database` Column**: Create a new column named `Database` with a static value "Scopus".
+7. **Remove and re-order Columns**: Remove columns that are not needed for further analysis.
+   - Click on the dropdown arrow next to the `All` column header. Select "Edit columns" > "Re-order / remove columns...".
+   - Drag and drop the column headers to remove them. Only keep columns `journal_info`, `ISSNs`, and `Database`, and rearrange them in this order.
+8. **Add `Database` Column**: Create a new column named `Database` with a static value "Scopus".
    - Click on the dropdown arrow next to any column header.
    - Select "Edit column" > "Add column based on this column..."
    - Enter the following expression: "Scopus" and name the new column `Database`.
-10. **Fill Down Values**: Fill down values in the `journal_info` column.
+9. **Fill Down Values**: Fill down values in the `journal_info` column.
    - Click on the dropdown arrow next to the `journal_info` column header, select "Edit cells" > "Fill down".
-11. **Add `Database(Last_Update)` Column**: Create a new column named `Database(Last_Update)` based on the `Database` column.
+10. **Add `Database(Last_Update)` Column**: Create a new column named `Database(Last_Update)` based on the `Database` column.
     - Click on the dropdown arrow next to the `Database` column header.
     - Select "Edit column" > "Add column based on this column..."
     - Enter the following expression:
@@ -211,7 +212,7 @@ The search can be updated daily.
       "2023-10 ("+value+")"
       ```
       and name the new column `Database(Last_Update)`.
-10. Export the data as a tsv file and save it into the "All_Databases" folder.
+11. Export the data as a tsv file and save it into the "All_Databases" folder.
 
 ### MEDLINE
 
@@ -225,14 +226,14 @@ The search can be updated daily.
 2. **Configure Project**: Make any changes if necessary (all settings should be fine). Enter a meaningful project name, e.g. "MEDLINE_2024-05-31". Click "Create Project" to load the data.
 
 #### Applying the Script
-1. **Use the Script**: Apply the provided OpenRefine script (`MEDLINE.json`) to the loaded data. This script automates several cleaning and transformation steps.
-   - In OpenRefine, go to `Undo/Redo` > `Apply...` and upload the `Scopus.json` file.
+1. **Use the Script**: Apply the provided OpenRefine script (`MEDLINE.json`) to the loaded data. 
+   - In OpenRefine, go to "Undo/Redo" > "Apply..." and upload the `MEDLINE.json` file.
    - Please find a description of how to recreate the script manually below.
 
 ### Transformations and Cleaning Steps
 1. **Rename Column**: Rename the `Column 1` column to `journal_info`.
    - Click on the dropdown arrow next to the `Column 1` column header.
-   - Select "Edit column" > "Rename this column" and enter `journal_info`.
+   - Select "Edit column" > "Rename this column" and enter "journal_info".
 2. **Create `journal` Column**: Extract the journal information from `journal_info` and create a new column named `journal`.
    - Click on the dropdown arrow next to the `journal_info` column header.
    - Select "Edit column" > "Add column based on this column..."
@@ -240,13 +241,14 @@ The search can be updated daily.
    ```grel
    if(value.contains(/^\d+\. /), value, "")
    ```
-   and name the new column `journal`. This expression extract all lines starting with a number (one or more digits), followed by a dot and then a space.
+   and name the new column `journal`. This expression extracts all lines starting with a number (one or more digits), followed by a dot and then a space.
 3. **Reorder Columns**: Reorder the columns to ensure `journal` is the primary column.
-   - In the same menu: Drag and drop the column headers to rearrange them.
-4. **Join Multi-valued Cells**: Join multi-valued cells in the `journal_info` column.
+   - Click on the dropdown arrow next to the `All` column header. Select "Edit columns" > "Re-order / remove columns...".
+   - Drag and drop the column headers to rearrange them.
+5. **Join Multi-valued Cells**: Join multi-valued cells in the `journal_info` column.
    - Click on the dropdown arrow next to the `journal_info` column header.
    - Select "Edit cells" > "Join multi-valued cells" and use a space as the separator.
-5. **Create `ISSNs` Column**: Extract ISSNs from `journal_info` and create a new column named `ISSNs`.
+6. **Create `ISSNs` Column**: Extract ISSNs from `journal_info` and create a new column named `ISSNs`.
    - Click on the dropdown arrow next to the `journal_info` column header.
    - Select "Edit column" > "Add column based on this column..."
    - Enter the following expression: 
@@ -254,7 +256,7 @@ The search can be updated daily.
     value.find(/ISSN:(.*)/)[0].split(".")[0].split("ISSN:")[0]
     ```
     and name the new column `ISSNs`.
-6. **Extract `ISSNs`**: Ensure the ISSNs are correctly formatted.
+7. **Extract `ISSNs`**: Extract only ISSN numbers from the information in the column `ISSNs`.
    - Click on the dropdown arrow next to the `ISSNs` column header.
    - Select "Edit cells" > "Transform..." and enter the following expression:
      ```grel
@@ -270,7 +272,7 @@ The search can be updated daily.
     - Click on the dropdown arrow next to any column header.
     - Select "Edit column" > "Add column based on this column..."
     - Enter: "MEDLINE" and name the new column `Database`.
-11. **Add `Database(Last_Update)` Column**: Create a new column named v based on the `Database` column.
+11. **Add `Database(Last_Update)` Column**: Create a new column named `Database(Last_Update)` based on the `Database` column.
     - Click on the dropdown arrow next to the `Database` column header.
     - Select "Edit column" > "Add column based on this column..."
     - Enter the following expression:
@@ -283,58 +285,59 @@ The search can be updated daily.
 ### Create a file containing journal lists of all databases
 
 #### Loading Data into OpenRefine
-1. **Create a New Project**: Click on "Create Project" and select "Choose Files" to upload all tsv files you exported simultaneously.
+1. **Create a New Project**: Click on "Create Project" and select "Choose Files" to simultaneously upload all tsv files you exported in the previous steps.
 2. **Configure Project**: Click "Configure parsing options" and make any changes if necessary (all settings should be fine). Enter a meaningful project name, e.g. "All_databases_2024-05". Click "Create Project" to load the data.
 
-## Enhancing publication data from the university bibliography
+## Matching publication data from the university bibliography
 
 ### Download and prepare data from the university bibliography
 
 #### Example data
 In this example, we will use data from the [publication server of the University of Augsburg](https://opus.bibliothek.uni-augsburg.de/opus4/home). To select a small subset, we select articles published by members of the Faculty of Medicine in 2024, as recorded in OPUS on 2024-06-03, i.e.:
-   - `Document type`: article
-   - `Year of Publication`: 2024
-   - `Institute`: Medizinische Fakultät
+   - `Document type`: "article"
+   - `Year of Publication`: "2024"
+   - `Institute`: "Medizinische Fakultät"
 
-On 2024-06-03, this gave 236 results. The full metadata can be downloaded in XML format in the IP range of the university. For the workshop, file can be downloaded here: [2024-06-04_OPUS_Export_Articles_Med.xml](https://github.com/evamarik/OpenRefine_Journal_Article_Metadata_EAHIL2024/blob/main/2024-06-04_OPUS_Export_Articles_Med.xml)
+On 2024-06-03, this gave 236 results. The full metadata can be downloaded in XML format in the IP range of the university. For the workshop, the file can be downloaded here: [2024-06-04_OPUS_Export_Articles_Med.xml](https://github.com/evamarik/OpenRefine_Journal_Article_Metadata_EAHIL2024/blob/main/2024-06-04_OPUS_Export_Articles_Med.xml)
 
 #### Loading data in Open Refine**: 
 1. **Create a New Project**: Click on "Create Project" and select "Choose Files" to upload the xml file. 
 2. **Configure Project**: Select "Parse as XML file". Open Refine asks you to "Click on the first XML element corresponding to the first record to load". Select the first article (starting with "<Opus_Document Id="110428" ..."). Enter a meaningful project name, e.g. "Articles_2024_Med_2024-06-04". Click "Create Project" to load the data.
 
 #### Applying the Script
-1. **Use the Script**: Apply the provided OpenRefine script (`OPUS_Export_ISSN_Matching.json`) to the loaded data. This script automates several cleaning and transformation steps.
+1. **Use the Script**: Apply the provided Open Refine script (`OPUS_Export_ISSN_Matching.json`) to the loaded data. 
    - In OpenRefine, go to `Undo/Redo` > `Apply...` and upload the `OPUS_Export_ISSN_Matching.json` file.
    - Please find a description of how to recreate the script manually below.
 
 #### Transformations and Cleaning Steps
 
-1. **Reorder Columns**: Reorder the columns to a specific order.
+1. **Reove and Re-order Columns**: 
    - Click on the dropdown arrow next to the `All` column header. Select "Edit columns" > "Re-order / remove columns...".
-   - Remove all colums first.
-   - Then, search for the columns of interest and select to include them in the following order:
-     - Opus_Document - Id
-     - Opus_Document - PublishedYear
-     - Opus_Document - IdentifierDoi - Value
-     - Opus_Document - TitleMain - Value
-     - Opus_Document - TitleParent - Value
-     - Opus_Document - PublisherName
-     - Opus_Document - IdentifierIssn - Value
+   - Remove all columns first.
+   - Then, search for the columns of interest and include them in the following order:
+     - "Opus_Document - Id"
+     - "Opus_Document - PublishedYear"
+     - "Opus_Document - IdentifierDoi - Value"
+     - "Opus_Document - TitleMain - Value"
+     - "Opus_Document - TitleParent - Value"
+     - "Opus_Document - PublisherName"
+     - "Opus_Document - IdentifierIssn - Value"
 
-2. **Rename Columns**: Rename the columns to more user-friendly names. Manually, this can be done one by one by clicking on the dropdown arrow next to each column heading and selecting "Edit colum" > "Rename this colum".
-   - Opus_Document - Id → OPUS-ID
-   - Opus_Document - PublishedYear → PublishedYear
-   - Opus_Document - IdentifierDoi - Value → DOI
-   - Opus_Document - TitleMain - Value → ArticleTitle
-   - Opus_Document - TitleParent - Value → Journal
-   - Opus_Document - PublisherName → Publisher
-   - Opus_Document - IdentifierIssn - Value → ISSNs
+2. **Rename Columns**:
+Manually, this can be done one by one, by clicking on the dropdown arrow next to each column heading and selecting "Edit colum" > "Rename this colum".
+   - "Opus_Document - Id" → "OPUS-ID"
+   - "Opus_Document - PublishedYear" → "PublishedYear"
+   - "Opus_Document - IdentifierDoi - Value" → "DOI"
+   - "Opus_Document - TitleMain - Value" → "ArticleTitle"
+   - "Opus_Document - TitleParent - Value" → "Journal"
+   - "Opus_Document - PublisherName" → "Publisher"
+   - "Opus_Document - IdentifierIssn - Value" → "ISSNs"
 
 **Summary**: 
 
 | Column Name  | Initial name in the example XML (OPUS download) | Notes |
 |--------------|-------------------------------------------------|-------|
-| OPUS-ID | Opus_Document - Id (otpional) | internal unique identifier of the repository |
+| OPUS-ID | Opus_Document - Id | internal unique identifier of the repository | |
 | PublishedYear | Opus_Document - PublishedYear | |
 | DOI | Opus_Document - IdentifierDoi - Value | |
 | ArticleTitle | OPUS_Document - TitleMain - Value |  This column can have more than one entry per record (each in a separate row), e.g. subtitle or translated title |
@@ -357,14 +360,13 @@ On 2024-06-03, this gave 236 results. The full metadata can be downloaded in XML
    - Click on "Edit rows" > "Remove all matching rows".
 
 **Explanation**:
-
 Step 3 already removes most empty rows. Steps 4 and 5 were added to ensure that articles without an ISSN recorded in OPUS will be preserved, allowing for a subsequent intellectual check of these articles. For the example data set, this is actually not neccessary, as all articles have entries in the ISSN field.
 
 #### Match university bibliography with the journal indexed in databases
 
-In the following steps, we will match the prepared data from journals indexed in different databases with journal article data from a university bibliography, based on the ISSNs. This will be done using OpenRefine's cross function and various GREL formulas.
+In the following steps, we will match the prepared journal list (named, e.g., "All_databases_2024-05") with journal article data from a university bibliography, based on the ISSNs. This will be done using Open Refine's cross function.
 
-1. **Add `Indexed(Last_Update)` Column**: Create a new column `Indexed(Last_Update)` which lists the databases where each ISSN is indexed, and the last update of the respective title lists used.
+1. **Add `Indexed(Last_Update)` Column**: Create a new column `Indexed(Last_Update)` which lists the databases where each journal is indexed, and the last update of the respective database title list used.
     - Click on the dropdown arrow next to the `ISSNs` column header.
     - Select "Edit column" > "Add column based on this column..."
     - Enter the following expression:
